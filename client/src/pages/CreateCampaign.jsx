@@ -1,18 +1,17 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ethers } from "ethers";
+import { useStateContext } from '../context';
 
-import { useStateContext } from "../context";
 import { money } from "../assets";
 import { CustomButton, FormField, Loader } from "../components";
 import { checkIfImage } from "../utils";
 
 const CreateCampaign = () => {
+  const { createCampaign, account } = useStateContext();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  const { createCampaign } = useStateContext();
+  
   const [form, setForm] = useState({
-    name: "",
     title: "",
     description: "",
     target: "",
@@ -26,16 +25,32 @@ const CreateCampaign = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     checkIfImage(form.image, async (exists) => {
       if (exists) {
         setIsLoading(true);
-        await createCampaign({
-          ...form,
-          target: ethers.utils.parseUnits(form.target, 18),
-        });
-        setIsLoading(false);
-        navigate("/");
+        try {
+          if (!account) {
+            throw new Error("Please connect your wallet first.");
+          }
+          const txHash = await createCampaign({
+            ...form,
+            target: BigInt(parseFloat(form.target) * 100000000), // Convert to Octas and BigInt
+          });
+          setIsLoading(false);
+          console.log("Campaign created successfully. Transaction hash:", txHash);
+          navigate("/");
+        } catch (error) {
+          console.error("Error creating campaign:", error);
+          setIsLoading(false);
+          let errorMessage = "Failed to create campaign. Please try again.";
+          if (error.message.includes("Welldone wallet not detected")) {
+            errorMessage = "Welldone wallet not detected. Please install the Welldone wallet extension.";
+          } else if (error.message.includes("connect your wallet")) {
+            errorMessage = error.message;
+          }
+          alert(errorMessage);
+        }
       } else {
         alert("Provide valid image URL");
         setForm({ ...form, image: "" });
@@ -56,22 +71,13 @@ const CreateCampaign = () => {
         onSubmit={handleSubmit}
         className="w-full mt-[65px] flex flex-col gap-[30px]"
       >
-        <div className="flex flex-wrap gap-[40px]">
-          <FormField
-            labelName="Your Name *"
-            placeholder="John Doe"
-            inputType="text"
-            value={form.name}
-            handleChange={(e) => handleFormFieldChange("name", e)}
-          />
-          <FormField
-            labelName="Campaign Title *"
-            placeholder="Write a title"
-            inputType="text"
-            value={form.title}
-            handleChange={(e) => handleFormFieldChange("title", e)}
-          />
-        </div>
+        <FormField
+          labelName="Campaign Title *"
+          placeholder="Write a title"
+          inputType="text"
+          value={form.title}
+          handleChange={(e) => handleFormFieldChange("title", e)}
+        />
 
         <FormField
           labelName="Story *"
@@ -95,7 +101,7 @@ const CreateCampaign = () => {
         <div className="flex flex-wrap gap-[40px]">
           <FormField
             labelName="Goal *"
-            placeholder="ETH 0.50"
+            placeholder="APT 0.50"
             inputType="text"
             value={form.target}
             handleChange={(e) => handleFormFieldChange("target", e)}
@@ -130,3 +136,64 @@ const CreateCampaign = () => {
 };
 
 export default CreateCampaign;
+
+
+// import React, { useState } from "react";
+// import { useNavigate } from "react-router-dom";
+// import { useStateContext } from '../context';
+
+// import { money } from "../assets";
+// import { CustomButton, FormField, Loader } from "../components";
+// import { checkIfImage } from "../utils";
+
+// const CreateCampaign = () => {
+//   const { createCampaign } = useStateContext();
+//   const navigate = useNavigate();
+//   const [isLoading, setIsLoading] = useState(false);
+  
+//   const [form, setForm] = useState({
+//     title: "",
+//     description: "",
+//     target: "",
+//     deadline: "",
+//     image: "",
+//   });
+
+//   const handleFormFieldChange = (fieldName, e) => {
+//     setForm({ ...form, [fieldName]: e.target.value });
+//   };
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+  
+//     checkIfImage(form.image, async (exists) => {
+//       if (exists) {
+//         setIsLoading(true);
+//         try {
+//           const txHash = await createCampaign({
+//             ...form,
+//             target: parseFloat(form.target) * 100000000, // Convert to Octas
+//           });
+//           setIsLoading(false);
+//           console.log("Campaign created successfully. Transaction hash:", txHash);
+//           navigate("/");
+//         } catch (error) {
+//           console.error("Error creating campaign:", error);
+//           setIsLoading(false);
+//           if (error.message.includes("Welldone wallet not detected")) {
+//             alert("Welldone wallet not detected. Please install the Welldone wallet extension.");
+//           } else {
+//             alert("Failed to create campaign. Please try again.");
+//           }
+//         }
+//       } else {
+//         alert("Provide valid image URL");
+//         setForm({ ...form, image: "" });
+//       }
+//     });
+//   };
+
+//   // ... rest of the component code ...
+// };
+
+// export default CreateCampaign;

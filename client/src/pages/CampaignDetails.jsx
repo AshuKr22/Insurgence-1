@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { ethers } from "ethers";
 
 import { useStateContext } from "../context";
 import { CountBox, CustomButton, Loader } from "../components";
@@ -171,7 +170,7 @@ const CampaignDetails = () => {
               <CustomButton
                 btnType="button"
                 title="Fund Campaign"
-                styles="w-full bg-[#8c6dfd]"
+                styles="w-full bg-orange-400"
                 handleClick={handleDonate}
               />
             </div>

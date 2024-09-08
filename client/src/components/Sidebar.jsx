@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { logo, sun } from "../assets";
+import { logo, logout, sun } from "../assets";
 import { navlinks } from "../constants";
+import logonav from "../assets/logonav.svg";
 
 const Icon = ({ styles, name, imgUrl, isActive, disabled, handleClick }) => (
   <div
@@ -27,7 +28,10 @@ const Sidebar = () => {
   return (
     <div className="flex justify-between items-center flex-col sticky top-5 h-[93vh]">
       <Link to="/">
-        <Icon styles="w-[52px] h-[52px] bg-[#2e2f36]" imgUrl={logo} />
+        {/* <Icon styles="w-[76px] h-[76px] bg-[#2e2f36] p-0 m-0" imgUrl={logonav} /> */}
+        <div>
+          <img src={logonav} className="w-[56px] h-[56px] border-2 border-gray-600 rounded-full" alt="" />
+        </div>
       </Link>
 
       <div className="flex-1 flex flex-col justify-between items-center bg-[#1e1f27] rounded-[20px] w-[76px] py-4 mt-12 shadow-md shadow-[#101115]">
@@ -47,10 +51,10 @@ const Sidebar = () => {
           ))}
         </div>
 
-        <Icon
+        {/* <Icon
           styles="text-orange-500 bg-orange-500 shadow-secondary"
           imgUrl={sun}
-        />
+        /> */}
       </div>
     </div>
   );
