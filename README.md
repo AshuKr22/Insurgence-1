@@ -2,7 +2,8 @@ Problem Statement
 
 Traditional crowdfunding platforms like Kickstarter and Indiegogo face significant challenges:
 
-![Uploading Screenshot 2024-09-09 at 3.47.59 PM.png…]()
+
+<img width="1427" alt="Screenshot 2024-09-09 at 3 50 32 PM" src="https://github.com/user-attachments/assets/327b7d65-3fe7-4f90-b96b-54447a9dd903">
 
 
 	•	Centralized Control: Central authorities control funds, creating a single point of failure and potential for mismanagement or censorship.
