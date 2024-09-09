@@ -2,6 +2,9 @@ Problem Statement
 
 Traditional crowdfunding platforms like Kickstarter and Indiegogo face significant challenges:
 
+![Uploading Screenshot 2024-09-09 at 3.47.59 PM.png…]()
+
+
 	•	Centralized Control: Central authorities control funds, creating a single point of failure and potential for mismanagement or censorship.
 	•	Lack of Transparency: Backers often lack visibility into how funds are utilized, leading to mistrust.
 	•	Delayed or Incomplete Delivery: Creators may fail to deliver promised milestones, leaving backers without recourse.
